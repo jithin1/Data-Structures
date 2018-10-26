@@ -1,4 +1,11 @@
-  import java.util.LinkedList;
+ /* Java progaram to implement chain hashing
+  Hash function used  (Summation(s[i] *x power(i-1))modp) mod m
+  m = bucked size
+  p = 1000000007
+  x = 263
+ */
+
+import java.util.LinkedList;
   import java.util.Scanner;
   
    class Hashing{
