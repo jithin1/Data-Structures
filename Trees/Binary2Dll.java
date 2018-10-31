@@ -50,3 +50,5 @@
            tree.printList();
         }
     }
+
+// Time complexity O(n)
