@@ -55,3 +55,5 @@ class TreeNode{
           
      }
 }
+
+Time complexity = O(n) 
