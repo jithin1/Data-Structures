@@ -1,8 +1,5 @@
 /* java program to find the diameter of a given tree */
 
-
-   20) Diameter of a tree
-
      class node{
     int data;
     node left,right;
