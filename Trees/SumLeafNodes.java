@@ -22,10 +22,10 @@ class TreeNode{
             
           else{
             
-            if(root.left == null && root.right == null)    
+            if(root.left == null && root.right == null)    // reached the leaf node
                 return root.data;
                 
-             int result = sum(root.left) + sum(root.right);
+             int result = sum(root.left) + sum(root.right);  // to store the result of addition
               return result;
           }
           
