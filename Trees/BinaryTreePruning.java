@@ -38,3 +38,5 @@ class Solution {
         
     }
 }
+
+// Time complexity O(n)
