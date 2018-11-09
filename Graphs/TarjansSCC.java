@@ -1,3 +1,6 @@
+/*
+Tarjan's Algorithm to find Strongly Connected Components.
+*/
 import java.util.*;
 
  class SCCGraph{
@@ -30,24 +33,23 @@ import java.util.*;
     }
     
     public void DFS(int v){
-        visited[v] = true;
-        stackMember[v] = true;
-        st.push(v);
-        disc[v] = low[v] = time++;
+        visited[v] = true;  
+        stackMember[v] = true; 
+        st.push(v); // push the present vertex to stack
+        disc[v] = low[v] = time++;  
         
         Iterator<Integer> itr = adjl[v].listIterator();
         
         while(itr.hasNext()){
-             int u = itr.next();
+             int u = itr.next();  
              
             if(!visited[u]){
-                DFS(u);
-                
+                DFS(u);                
                 low[v] = Math.min(low[u],low[v]);
             }
             
             else{
-                  if(stackMember[u])
+                  if(stackMember[u])  // if parent is present in stack, 
                 low[v] = Math.min(low[v],disc[u]);
             }
               
