@@ -30,7 +30,6 @@ The time complexity of this algorithm is O(V+E)
 	//Function to add an edge into the graph
 	void addEdge(int v,int w) { adj[v].add(w); }
 
-	// A recursive function to print DFS starting from v
 	void DFSUtil(int v,Boolean visited[])
 	{
 		visited[v] = true;
