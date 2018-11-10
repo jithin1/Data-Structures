@@ -54,7 +54,7 @@ class Solution {
            return result;  
     }
     
-    public int findSum(int[] a, int p1,int str, int end, int target){   // ninary Search takes O(logn) time
+    public int findSum(int[] a, int p1,int str, int end, int target){   // binary Search takes O(logn) time
         if(str > end)
             return -1;
         
