@@ -40,19 +40,22 @@ class Solution {
         
         for(int i=1; i< ch.length-1; i++){
             
-            int left = 2*cen - i;   // find the position of left boundary
+            int left = 2*cen - i;   // find the position of mirror
             
             if(right > i)
-                p[i] = Math.min(right-i,p[left]);
+                p[i] = Math.min(right-i,p[left]);  // we can update the value of p[i] as we already found a palindrome
             
-            while(ch[i+p[i]+1] == ch[i-(p[i]+1)])
+            while(ch[i+p[i]+1] == ch[i-(p[i]+1)]) // checking for a palindrome
                 p[i]++;
             
-            if(i+p[i] > right){
-                cen = i;
-                right = i+p[i];
+            if(i+p[i] > right){  // we have found a new left and right boundary, so update the centres
+                cen = i;  
+                right = i+p[i]; // go till the other half
             }
         }
+      
+      // Steps below is used to print the longest palindrome
+      
            int max = Integer.MIN_VALUE;
             int max_index = -1;
                 
