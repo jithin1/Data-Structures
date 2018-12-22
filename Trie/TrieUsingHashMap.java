@@ -1,3 +1,4 @@
+/*
 Given a list of strings words representing an English Dictionary, find the longest word in words that can be built one character at a 
 time by other words in words. If there is more than one possible answer, return the longest word with the smallest lexicographical order.
 
@@ -19,7 +20,7 @@ class Solution {
         tn.insert(words[i],i);
            return tn.search();
     }
-}
+}  */
     
     class Node{
         int c;
@@ -72,3 +73,7 @@ class Solution {
        }
        
     }
+    
+    Time complexity for insertiion = O(n)
+    Time complexity for searching a query is O(logn)
+    
