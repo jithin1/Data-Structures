@@ -1,54 +1,32 @@
-/* java program to find the diameter of a given tree */
 
-     class node{
-    int data;
-    node left,right;
+Given a binary tree, you need to compute the length of the diameter of the tree. The diameter of a binary tree is the length of the 
+longest path between any two nodes in a tree. This path may or may not pass through the root.
+     
+ /**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    int maxDiameter = 0;
+    public int diameterOfBinaryTree(TreeNode root) {
+             getHeight(root);
+             return maxDiameter;
+    }
     
-    node(int data){
-        this.data=data;
-        this.left=null;
-        this.right=null;
-    }
- }
-
-    class Diameter{
-        node root;
-        
-        public int diameter(node a){
-
-            if(a==null)
-            return 0;
-            int lheight=getHeight(a.left);  // left subtree height
-            int rheight=getHeight(a.right);
-            
-            int ldiameter=diameter(a.left);  // calculate diametr of right subtrees
-            int rdiamter=diameter(a.right);  /.calculate diameter of left sub trees
-            
-            return Math.max(lheight+rheight+1,Math.max(ldiameter,rdiamter));
-        }
-        
-         public int getHeight(node a){
+      public int getHeight(TreeNode a){
+          
             if(a==null)
             return 0;
             
-            return 1+Math.max(getHeight(a.left),getHeight(a.right));
+            int lefth = getHeight(a.left);
+            int righth = getHeight(a.right);
+            int diameter = lefth+righth;
+            maxDiameter = Math.max(maxDiameter,diameter);
+            return 1+Math.max(lefth,righth);
          }
-        
-        public static void main(String[] args){
-            Diameter d=new Diameter();
-            d.root=new node(3);
-            d.root.right=new node(12);
-            d.root.left=new node(4);
-            d.root.left.left=new node(5);
-            d.root.left.left.right=new node(1);
-            d.root.left.left.right.left=new node(6);
-            d.root.left.left.right.left.left=new node(7);
-            d.root.left.right=new node(10);
-            d.root.left.right.left=new node(11);
-            d.root.left.right.left.right=new node(14);
-            d.root.left.right.left.right.right=new node(16);
-            
-            System.out.println(d.diameter(d.root));
-        }
-    }
-
+}
