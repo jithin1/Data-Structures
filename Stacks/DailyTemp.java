@@ -18,10 +18,10 @@ class Solution {
      for(int i=length-1; i>=0; i--){
         int val = T[i];
          
-         if(T[i] < max)
+         if(T[i] < max)   // not present in stack
          while(!st.isEmpty()){
-             if(T[st.peek()] > val){
-                 result[i] = st.peek()-i;
+             if(T[st.peek()] > val){   // remove it as we no longer need it
+                 result[i] = st.peek()-i;  
                  st.push(i);
                  break;
              }
@@ -33,7 +33,6 @@ class Solution {
               st.clear();
               st.push(i);
               max = T[i];
-              result[i] = 0;
           }
          
      }
