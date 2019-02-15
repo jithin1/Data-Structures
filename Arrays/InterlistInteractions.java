@@ -44,10 +44,6 @@ class Solution {
                 
         }
         
-        Interval[] result = new Interval[intervals.size()];
-        for(int i=0; i< intervals.size(); i++)
-            result[i] = intervals.get(i);
-        
-        return result;
+        return intervals.toArray(new Interval[intervals.size()]);
     }
 }
