@@ -25,7 +25,7 @@ class Solution {
   intervals.add(new Interval(Math.max(A[ptr1].start,B[ptr2].start),Math.min(A[ptr1].end,B[ptr2].end)));  // add the overlap
 
                 
-                if(A[ptr1].end < B[ptr2].end)  /
+                if(A[ptr1].end < B[ptr2].end)  
                 ptr1++;
                 else if(A[ptr1].end > B[ptr2].end)
                     ptr2++;
