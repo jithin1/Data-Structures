@@ -1,0 +1,746 @@
+           1) Insertion and deletion of a binary search tree
+
+
+1) Node to be deleted is leaf: Simply remove from the tree. 
+              50                            50
+           /     \         delete(20)      /   \
+          30      70       --------->    30     70 
+         /  \    /  \                     \    /  \ 
+       20   40  60   80                   40  60   80
+
+2) Node to be deleted has only one child: Copy the child to the node and delete the child 
+              50                            50
+           /     \         delete(30)      /   \
+          30      70       --------->    40     70 
+            \    /  \                          /  \ 
+            40  60   80                       60   80
+
+3) Node to be deleted has two children: Find inorder successor of the node. Copy contents of the inorder successor to the
+  node and delete the inorder successor. Note that inorder predecessor can also be used.
+
+              50                            60
+           /     \         delete(50)      /   \
+          40      70       --------->    40    70 
+                 /  \                            \ 
+                60   80                           80
+
+
+      class node{
+    int data;
+    node left,right;
+    node(int data){
+        this.data=data;
+        this.right=null;
+        this.left=null;
+     }
+       
+   }
+ 
+   class BinarySearchTree{
+       node root;
+       
+       public node insertInto(node root,int d){
+          if(root==null){
+              return new node(d);
+          }
+             if(root.data>d)
+            root.left=insertInto(root.left,d);
+            
+            else
+            root.right=insertInto(root.right,d);
+           
+           return root;
+       }
+       
+        public void insert(int d){
+           root = insertInto(root,d);  // every single time root is returned
+        }
+        
+        public void inorder(node root){
+            if(root!=null){
+            inorder(root.left);
+             System.out.println(root.data);
+             inorder(root.right);
+            }
+        }
+        
+         public void delete(int d){
+             deleteTree(root,d);
+         }
+         
+         public node deleteTree(node root,int d){
+             if(root==null)
+             return root;
+             if(root.data>d)
+             root.left=deleteTree(root.left,d);
+             else if(root.data<d)
+              root.right=deleteTree(root.right,d);
+              else{
+                  if(root.left==null)
+                   return root.right;
+                   else if(root.right==null)
+                   return root.left;
+                  else{
+                      root.data=deletewhentwochild(root.right);
+                      root.right= deleteTree(root.right,root.data); // now search and delete that element in right
+                                                                    // subtree 
+                  }
+              }
+              return root;
+         }
+         
+         public int deletewhentwochild(node root){
+             int min=root.data;
+             while(root.left!=null){
+             min=root.left.data;
+             root=root.left;
+             }
+             return min;
+         }
+       
+        public static void main(String[] args){
+       BinarySearchTree tree=new BinarySearchTree();
+        tree.insert(50);
+        tree.insert(30);
+        tree.insert(20);
+        tree.insert(40);
+        tree.insert(70);
+        tree.insert(60);
+        tree.insert(80);
+        //tree.inorder(tree.root);
+        tree.delete(20);
+        tree.delete(30);
+         tree.delete(50);
+        tree.inorder(tree.root);
+        }
+   }
+
+
+      Advantages of BST over Hash Table.
+
+1) We can get all keys in sorted order by just doing Inorder Traversal of BST. This is not a natural operation in Hash
+   Tables and requires extra efforts. 
+
+2) Doing order statistics, finding closest lower and greater elements, doing range queries are easy to do with BSTs. Like 
+  sorting, these operations are not a natural operation with Hash Tables. 
+
+3) BSTs are easy to implement compared to hashing, we can easily implement our own customized BST. To implement Hashing, 
+  we generally rely on libraries provided by programming languages. 
+
+4) With Self-Balancing BSTs, all operations are guaranteed to work in O(Logn) time. But with Hashing, Θ(1) is average 
+  time and some particular operations may be costly, especially when table resizing happens.
+
+
+
+    2) Convert Binary tree to BST
+
+   import java.util.*;
+
+    class node{
+    int data;
+    node left,right;
+    node(int data){
+        this.data=data;
+        left=right=null;
+     }
+   }
+ 
+ public class Binary2BST{
+     node root;
+     int i=0;
+      int []a=new int[5];
+      
+     public void convertToBst(){
+         inorder(root);
+         Arrays.sort(a);
+         i=0;
+         convert(root);
+     }
+     
+     public void convert(node root){
+         if(root!=null){
+             convert(root.left);
+             root.data=a[i];
+             i++;
+             convert(root.right);
+         }
+     }
+     
+     public void inorder(node root){
+         if(root!=null)
+         {
+         inorder(root.left);
+           a[i]=root.data;
+           i++;
+         inorder(root.right);
+         }
+     }
+     
+      public void printBst(node root){
+           if(root!=null){
+          System.out.print(root.data+" ");
+          printBst(root.left);
+          printBst(root.right);
+           }
+      }
+      
+     public static void main(String[] args){
+         Binary2BST tree=new Binary2BST();
+         tree.root= new node(10);
+         tree.root.left=new node(30);
+         tree.root.right=new node(15);
+         tree.root.left.left=new node(20);
+         tree.root.right.right=new node(5);
+         tree.convertToBst();
+          tree.printBst(tree.root);
+     }
+  }
+
+
+   3) To figure out whether a binary tree is a binary search tree
+
+      Find inorder of the tree and then if the inorder is in ascending order we have found ourselves a BST else no
+
+
+     class Node
+  {
+	int data;
+	Node left, right;
+
+	public Node(int item)
+	{
+		data = item;
+		left = right = null;
+	}
+  }
+
+     public class BinaryTree
+   {
+	// Root of the Binary Tree
+	Node root;
+
+	// To keep track of previous node in Inorder Traversal
+	Node prev;
+
+	boolean isBST() {
+		prev = null;
+		return isBST(root);
+	}
+
+
+	boolean isBST(Node node)
+	{
+		// traverse the tree in inorder fashion and
+		// keep a track of previous node
+		if (node != null)
+		{
+			if (!isBST(node.left)) 
+				return false;   //this method can be used effectively and temporary array usage can be avoided
+
+			// allows only distinct values node
+			if (prev != null && node.data <= prev.data )
+				return false;
+			prev = node;
+			return isBST(node.right);
+		}
+		return true;
+	}
+
+	public static void main(String args[])
+
+	{
+		BinaryTree tree = new BinaryTree();
+		tree.root = new Node(4);
+		tree.root.left = new Node(2);
+		tree.root.right = new Node(5);
+		tree.root.left.left = new Node(1);
+		tree.root.left.right = new Node(3);
+
+		if (tree.isBST())
+			System.out.println("IS BST");
+		else
+			System.out.println("Not a BST");
+	}
+  }
+
+
+   4) AVL Tree
+
+
+    a) Left Left Case
+
+ T1, T2, T3 and T4 are subtrees.
+         z                                      y 
+        / \                                   /   \
+       y   T4      Right Rotate (z)          x      z
+      / \          - - - - - - - - ->      /  \    /  \ 
+     x   T3                               T1  T2  T3  T4
+    / \
+  T1   T2
+
+
+	b) Left Right Case
+
+     z                               z                           x
+    / \                            /   \                        /  \ 
+   y   T4  Left Rotate (y)        x    T4  Right Rotate(z)    y      z
+  / \      - - - - - - - - ->    /  \      - - - - - - - ->  / \    / \
+T1   x                          y    T3                    T1  T2 T3  T4
+    / \                        / \
+  T2   T3                    T1   T2
+
+
+	c) Right Right Case
+
+  z                                y
+ /  \                            /   \ 
+T1   y     Left Rotate(z)       z      x
+    /  \   - - - - - - - ->    / \    / \
+   T2   x                     T1  T2 T3  T4
+       / \
+     T3  T4
+
+
+
+	d) Right Left Case
+
+   z                            z                            x
+  / \                          / \                          /  \ 
+T1   y   Right Rotate (y)    T1   x      Left Rotate(z)   z      y
+    / \  - - - - - - - - ->     /  \   - - - - - - - ->  / \    / \
+   x   T4                      T2   y                  T1  T2  T3  T4
+  / \                              /  \
+T2   T3                           T3   T4
+
+
+
+     class node{
+    int data;
+    int level;
+    node left,right;
+    node(int data){
+        this.data=data;
+        this.left=null;
+        this.right=null;
+        this.level=1;
+    }
+  }
+
+   class AVLTree{
+       node root;
+       
+       public node insert(node root,int v){
+           if(root==null)
+           return new node(v);
+           if(root.data>v)
+            root.left=insert(root.left,v);
+            else if(root.data<v)
+            root.right=insert(root.right,v);
+            
+            root.level=1+maxHeight(getHeight(root.left),getHeight(root.right)); //does not happen for leaf node
+              int b=getBalance(root); // left sub tree - right subtree
+              
+              // left left case
+               if(b>1&&root.left.data>v)
+               root= rightRotate(root);
+               
+               // right right case
+               if(b<-1&&root.right.data<v)
+                root=leftRotate(root);
+                
+                // left right case
+                if(b>1&&root.left.data<v){
+                    root.left=leftRotate(root.left);
+                    root=rightRotate(root);
+                }
+                
+                // right left case
+                if(b<-1&&root.right.data>v){
+                    root.right=rightRotate(root.right);
+                    root=leftRotate(root);
+                }
+            return root;
+       }
+        
+           public node leftRotate(node root){
+               node y=root.right;
+               node t1=y.left;
+               
+               y.left=root;
+               root.right=t1;
+               
+               root.level=1+maxHeight(getHeight(root.left),getHeight(root.right));
+               y.level=1+maxHeight(getHeight(y.left),getHeight(y.right));
+               
+               return y;
+           }
+           
+           public node  rightRotate(node root){
+               node y=root.left;
+               node t1=y.right;
+               
+               y.right=root;
+               root.left=t1;
+               
+                root.level=1+maxHeight(getHeight(root.left),getHeight(root.right));
+               y.level=1+maxHeight(getHeight(y.left),getHeight(y.right));
+               
+               return y;
+           }
+        
+        public int getBalance(node root){
+            return getHeight(root.left)-getHeight(root.right);  // function is called to avoid null pointer exception
+        }
+        
+        public int getHeight(node root){
+            if(root==null)
+            return 0;
+            return root.level;
+        }
+        
+        public int maxHeight(int a,int b){
+          return (a>b)?a:b;    
+        }
+        
+        public node inorder(node root){
+           if(root!=null){
+               inorder(root.left);
+               System.out.println(root.data+" "+root.level);
+               inorder(root.right);
+           }  
+           return root;
+        }
+        
+       public static void main(String[] args){
+           AVLTree tree=new AVLTree();
+        tree.root =  tree.insert(tree.root,10); // tree.root because you never know when root can change
+		tree.root = tree.insert(tree.root, 20);
+		tree.root = tree.insert(tree.root, 30);
+		tree.root = tree.insert(tree.root, 40);
+		tree.root = tree.insert(tree.root, 50);
+		tree.root = tree.insert(tree.root, 25);
+		tree.root = tree.insert(tree.root, 29);
+		tree.root = tree.insert(tree.root, 27);
+		tree.inorder(tree.root);
+       }
+   }
+
+ 
+         5) Convert Level order Traversal to BST   // Beautiful thinking. Good use of boundaries
+
+
+  1) Pop NodeDetails from the queue in temp.
+  2) Check whether the current array element can be a left child of the node in temp with the help of min and temp.node 
+    data values. If it can, then create a new NodeDetails structure for this new array element value with its proper ‘min’
+    and ‘max’ values and push it to the queue, make this new node as the left child of temp’s node and move to next element 
+    in arr[].
+  3) Check whether the current array element can be a right child of the node in temp with the help of max and temp.node 
+    data values. If it can, then create a new NodeDetails structure for this new array element value with its proper ‘min’ 
+    and ‘max’ values and push it to the queue, make this new node as the right child of temp’s node and move to next element
+    in arr[].
+     Repeat steps 1, 2 and 3 until there are no more elements in arr[].
+        For a left child node, its min value will be its parent’s ‘min’ value and max value will be the data value of its
+   parent node. For a right child node, its min value will be the data value of its parent node and max value will be its
+    parent’s ‘max’ value.
+
+
+
+      import java.util.*;
+    class node{
+    int data;
+    node left,right;
+    int min, max;
+    node(int data){
+        this.data=data;
+        left=right=null;
+          }
+    }
+
+    class BinarySearchTree{
+       node root;
+       int size=0;
+       
+       public void convertToBST(int a[]){
+           int i=1;
+           Queue<node> q=new LinkedList<node>();
+            root=new node(a[0]);
+            root.min=Integer.MIN_VALUE;
+            root.max=Integer.MAX_VALUE;
+             q.add(root);
+           size=a.length;
+           node temp;
+           while(i<size){
+
+               temp=q.remove();
+
+               if(a[i]<temp.data && a[i]>temp.min){  //to ensure that value goes into the correct left subtree
+                temp.left=new node(a[i]);
+                temp.left.min=temp.min;
+                temp.left.max=temp.data;
+                q.add(temp.left);
+                i++;
+               }
+               
+               if(a[i]>temp.data&&a[i]<temp.max){
+                   temp.right=new node(a[i]);
+                   temp.right.min=temp.data;
+                   temp.right.max=temp.max;
+                   q.add(temp.right);
+                   i++;
+               }
+           }
+           
+       } 
+       
+        public void inorder(node root){
+            if(root!=null){
+            inorder(root.left);
+            System.out.print(root.data+" ");
+            inorder(root.right);
+            }
+        }
+        
+       public static void main(String[] args){
+           int arr[] = {7, 4, 12, 3, 6, 8, 1, 5, 10};
+           BinarySearchTree bst=new BinarySearchTree();
+           bst.convertToBST(arr);
+            bst.inorder(bst.root);
+            
+       }
+    }
+
+    // Observation
+
+  a) For left child min is parents min but max is parent
+   b) for right child, min is parent , but max is parent's max
+
+
+    6) Greatest value less than or equal to given value in a BST
+
+    
+  class node{
+    int data;
+    node left,right;
+
+    node(int data){
+        this.data=data;
+        this.left=null;
+        this.right=null;
+    }
+
+  }
+    
+    class BinarySearchTree{
+       node root;
+       
+       public int findGreatest(node root,int d){
+
+           if(root.data>d&&root.left==null) //left side is empty so no more element left
+            return -1;
+            if((root.data<=d&&root.right==null)||(root.data<=d&&root.right.data>d))   // no more higher values less than or equal to given value
+             return root.data;
+             if(root.data>d)  //search in the left subtree
+              return findGreatest(root.left,d);
+              else  // search in the right subtree
+               return findGreatest(root.right,d);
+       }
+       
+       
+       
+       public static void main(String[] args){
+        BinarySearchTree tree=new BinarySearchTree();
+		tree.root = new node(10);
+		tree.root.left = new node(6);
+		tree.root.right = new node(11);
+		tree.root.left.left = new node(1);
+		tree.root.left.right = new node(8);
+		System.out.println(tree.findGreatest(tree.root,7));
+       }
+    }
+
+
+
+                      7) Red Black Tree
+
+
+      1) Root is black.
+      2) no red red parent child relationship
+      3) Number of black nodes from parent to child,with less than two nodes is same.
+
+       1) If tree is empty create black node(root)
+       2) Insert new leaf node as red.   
+             If parent is black good to go
+              else (When parent is red)
+                   a) If black uncle present or no uncle
+                      rotate and recolour
+                   b) If red sibling ,recolour and check again.
+                        Dont recolour root.
+
+
+    class node{
+    int data;
+    String colour;
+    node parent,left,right;
+    node(int data){
+        this.data=data;
+        this.left=null;
+        this.right=null;
+        }
+   }
+
+    class RedBlackTree{
+        node root;
+        
+        public node insertTree(node root,node cur){
+            if(root==null){
+                return cur;
+            }
+            if(cur.data<root.data){
+             root.left=insertTree(root.left,cur);
+             root.left.parent=root;
+            }
+             else if(root.data<cur.data){
+             root.right=insertTree(root.right,cur);
+             root.right.parent=root;
+             }
+             return root;
+        }
+        
+        public void leftRotation(node c){
+            node parent=c.parent;  // record parent to change pointer of temp
+            node temp=c.right;  
+            c.right=temp.left;
+            temp.left=c;
+             c.parent=temp;
+              swap(c,temp);  // swap colours
+
+               if(parent!=null) // possible only when grandparent is root
+               {
+                 if(parent.left==c)  // to change children
+                 parent.left=temp;   
+
+                 else
+                 parent.right=temp;  
+
+                 temp.parent=parent;  new node so change parent
+               }
+
+               else
+                root=temp;  // change root as parent is empty
+        }
+        
+        public void rightRotation(node c){
+            node parent= c.parent;
+            node temp=c.left;
+            c.left=temp.right;
+            temp.right=c;
+             c.parent=temp; 
+             swap(c,temp);
+              if(parent!=null)
+               {
+                 if(parent.left==c)
+                  parent.left=temp;
+                  else 
+                  parent.right=temp;
+                  temp.parent=parent;
+               }
+               
+               else{
+                   root=temp;
+               }
+        }
+        
+        public node removeVoilations(node cur){
+
+           node parent=null;
+           node grandparent=null;
+
+              while(cur!=root&&cur.colour!="BLACK"&&cur.parent.colour=="RED"){
+                  parent=cur.parent;
+                  grandparent=parent.parent;
+                  if(parent==grandparent.left){         //left parent
+                      node uncle=grandparent.right;
+
+                      if(uncle != null &&uncle.colour=="RED"){  // 2 c
+                          uncle.colour="BLACK";
+                          parent.colour="BLACK";
+                          if(grandparent!=root)
+                          grandparent.colour="RED";
+                          cur=grandparent;
+                      }
+                  
+                     else{    //left right case   //2 a
+                         if(parent.right==cur){
+                             leftRotation(parent);
+                         }
+                             rightRotation(grandparent);
+                              return root;
+                     }
+                }
+                
+                   else{  // right case
+
+                       node uncle=grandparent.left;
+                        if(uncle != null &&uncle.colour=="RED"){
+                          uncle.colour="BLACK";
+                          parent.colour="BLACK";
+                          if(grandparent!=root)
+                          grandparent.colour="RED";
+                          cur=grandparent;
+                        }
+                        else{
+                               if(parent.left==cur){  // 2 a
+                             rightRotation(parent);
+                              }
+                             leftRotation(grandparent);
+                               return root;    
+                        }
+                   }
+              
+            }
+              return root;
+         }
+         
+          public void swap(node a,node b){
+              String t_colour=a.colour;
+              a.colour=b.colour;
+              b.colour=t_colour;
+          }
+         
+         public void insert(int d){
+            if(root==null)
+             {
+                 root=new node(d);
+                 root.colour="BLACK";
+                 return;
+             }
+             else{
+                 node temp=new node(d);
+                 temp.colour="RED";
+                  insertTree(root,temp);
+                  root=removeVoilations(temp);
+             }
+         }
+         
+         public void inorder(node root){
+            if(root!=null){
+            inorder(root.left);
+            System.out.print(root.data+" "+root.colour+" ");
+            if(root!=this.root)
+             System.out.println(" parent is "+root.parent.data+" ");
+            inorder(root.right);
+            }
+        }
+        
+        public static void main(String[] args){
+            RedBlackTree rbt=new RedBlackTree();
+            rbt.insert(10);
+            rbt.insert(15);
+            rbt.insert(16); 
+            rbt.inorder(rbt.root);
+        }
+        
+    }
+
+
+     
