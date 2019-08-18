@@ -1,4 +1,4 @@
-/* Dijsktra's algorithm to find the shortest path in a graph
+// Dijsktra's algorithm to find the shortest path in a graph
 
 
      public class ShortestPath{
