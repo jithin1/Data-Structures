@@ -1,4 +1,20 @@
-// Codeforces : https://codeforces.com/contest/1063/problem/B
+/* Codeforces : https://codeforces.com/contest/1063/problem/B
+10 10
+10 4
+10 9
+...*******
+.*.*******
+.*.*******
+.*.*******
+.*.*******
+.*.*......
+.*.*.*****
+.*........
+.********.
+..........
+
+Solution 43
+*/
 
     import java.util.*;
     import java.io.*;
@@ -49,12 +65,12 @@
                int y = c.y;
                	
     		 if(i-1 >= 0 && p[i-1][j] !='*'){
-    		 dequeue.addFirst(new Cell(i-1,j,x,y));
+    		 dequeue.addFirst(new Cell(i-1,j,x,y));  // Traverse these cells first
     		    p[i-1][j] = '*';
     			ways++;
     		 }
     		 
-    		 if(i+1 < n && p[i+1][j] !='*'){
+    		 if(i+1 < n && p[i+1][j] !='*'){  // Traverse these cells first
     			 dequeue.addFirst(new Cell(i+1,j,x,y));
     			p[i+1][j] = '*';
     			ways++;
