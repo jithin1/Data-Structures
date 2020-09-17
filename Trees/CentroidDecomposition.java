@@ -54,11 +54,11 @@ class Solution{
         int[][] edges = getEdges();
         subTreeSums = new int[n+1];
         visitedCentroids = new boolean[n+1];
-        fromNode = new int[n];
-        toNode = new int[n];
         int m = n-1;
+        fromNode = new int[m];
+        toNode = new int[m];
         
-        int[] from = new int[m+1], to = new int[m+1];
+        int[] from = new int[m], to = new int[m];
         
 		for(int i = 0; i < m; i++) {  // input edges
 			from[i] = edges[i][0];
