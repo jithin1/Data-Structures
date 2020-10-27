@@ -12,6 +12,7 @@ void solve() {
 
 	}
 	
+          //undirected graph
 	int[][] packU(int n, int[] from, int[] to) {  // Graph construction
 		int[][] g = new int[n][];
 		int[] p = new int[n];
@@ -26,4 +27,18 @@ void solve() {
 			g[to[i]][--p[to[i]]] = from[i];
 		}
 		return g;
-	}
+
+//directed graph
+private static int[][] construct(int n, int[] from, int[] to){
+          int[][] g = new int[n+1][];
+		int[] p = new int[n+1];
+		for (int f : from)
+			p[f]++;
+		for (int i = 0; i <=n; i++)
+			g[i] = new int[p[i]];
+		for (int i = 0; i < from.length; i++) {
+			g[from[i]][--p[from[i]]] = to[i];
+		}
+		return g;
+     }
+}
